@@ -1,13 +1,13 @@
 runtime: python27
 api_version: 1
-threadsafe: false
+threadsafe: true
 
 handlers:
-- url: /.*
-  script: index.py
-
 - url: /bootstrap
   static_dir: bootstrap
+
+- url: /.*
+  script: index.app
 
 libraries:
 - name: webapp2

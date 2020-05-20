@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+
+<head>
+    <link type="text/css" rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <link type="text/css" rel="stylesheet" href="/bootstrap/css/bootstrap-responsive.css">
+</head>
+
+<body>
+
+    <div class="navbar navbar-fixed-top navbar-inner">
+        <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"></button>
+        <a class="brand" href="#">Health Wellbeing</a>
+        <a href="{{ url|safe }}" class="btn">{{ url_linktext }}</a>
+    </div>
+</body>
+
+</html>
+{% endautoescape %}

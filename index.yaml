@@ -1,10 +1,19 @@
 indexes:
-- kind: user
-  ancestor: no
+
+- kind: Account
+  ancestor: yes
   properties:
-  - name: id
-    direction: asc
+  - name: email
+    direction: desc
   - name: name
     direction: desc
-  - name: password
+
+- kind: AccountFood
+  ancestor: yes
+  properties:
+  - name: account
+    direction: desc
+  - name: food
+    direction: desc
+  - name: calories
     direction: desc
