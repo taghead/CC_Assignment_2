@@ -1,0 +1,21 @@
+runtime: python27
+api_version: 1
+threadsafe: true
+service: backend
+
+handlers:
+- url: /bootstrap
+  static_dir: bootstrap
+
+- url: /.*
+  script: index.app
+
+libraries:
+- name: webapp2
+  version: latest
+- name: jinja2
+  version: latest
+
+env_variables:
+  FIREBASE_PROJECT_ID: 'wellbeing-app-cloud-computing'
+  GAE_USE_SOCKETS_HTTPLIB : 'true'
