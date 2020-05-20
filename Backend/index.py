@@ -17,7 +17,7 @@ import requests_toolbelt.adapters.appengine
 #
 #from flask import Flask, jsonify, request
 #from google.appengine.api import users
-#from google.appengine.ext import ndb
+from google.appengine.ext import ndb
 
 requests_toolbelt.adapters.appengine.monkeypatch()
 HTTP_REQUEST = google.auth.transport.requests.Request()
