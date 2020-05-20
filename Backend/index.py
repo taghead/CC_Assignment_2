@@ -17,7 +17,7 @@ import requests_toolbelt.adapters.appengine
 #
 #from flask import Flask, jsonify, request
 #from google.appengine.api import users
-from google.appengine.ext import ndb
+#from google.appengine.ext import ndb
 
 requests_toolbelt.adapters.appengine.monkeypatch()
 HTTP_REQUEST = google.auth.transport.requests.Request()
@@ -30,6 +30,9 @@ class Note(ndb.Model):
     friendly_id = ndb.StringProperty()
     message = ndb.TextProperty()
     created = ndb.DateTimeProperty(auto_now_add=True)
+
+N = Note("Pizza","Time", null)
+N.put()
 
 class Account(ndb.Model):
     email = ndb.StringProperty(indexed=True)

@@ -1,5 +1,6 @@
 <!doctype html>
 <html>
+
 <head>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.6.0/firebase-app.js"></script>
@@ -10,29 +11,28 @@
   <script src="/main.js"></script>
   <title>Health Wellbeing</title>
 </head>
+
 <body>
   <div id="logged-out">
-    <h1>Health Wellbeing</h1>
-    <h3>Sign in to access your notebook</h3>
+    <h1>Health Wellbeing - Sign in to track your health</h1>
     <div id="firebaseui-auth-container"></div>
   </div>
 
   <div id="logged-in">
-    <h1>Welcome, <span id="user"></span>!</h1>
-    <h3>Enter a note and save it to your personal notebook</h3>
-  <div id="form">
+    <h1>Welcome <span id="user"></span>!</h1>
+    <h3>Enter New Food Item</h3>
     <form action="" method="post">
       <div class="form-group">
         <textarea id="note-content"></textarea>
       </div>
       <div class="form-group">
         <button id="add-note">Save note</button>
-        <button id="sign-out">Sign out</button> 
+        <button id="add-NewUserFoodBtn">Add new food entry</button>
+        <button id="sign-out">Sign out</button>
       </div>
     </form>
-  </div>
-
-  <div id="notes-container"></div>
+    <div id="notes-container"></div>
   </div>
 </body>
+
 </html>

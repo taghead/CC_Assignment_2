@@ -1,7 +1,10 @@
-$(function () {
+$(
+  function () {
   var backendHostUrl = 'https://backend-dot-wellbeing-app-cloud-computing.ts.r.appspot.com';
-
-  var config = {
+  //var backendHostUrl = 'http://localhost:8080/';
+  
+  var userIdToken = null;
+  var firebase_config = {
     apiKey: "AIzaSyD1HTBWxISiw41mcO13ZliL5JxslNYhOco",
     authDomain: "wellbeing-app-cloud-computing.firebaseapp.com",
     databaseURL: "https://wellbeing-app-cloud-computing.firebaseio.com",
@@ -11,30 +14,23 @@ $(function () {
     appId: "1:355287276328:web:a8c73e4d164c608c91ce1d",
     measurementId: "G-7WX27YE7MP"
   };
-
-  var userIdToken = null;
-
+  
   function configureFirebaseLogin() {
-
-    firebase.initializeApp(config);
-
+    firebase.initializeApp(firebase_config);
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         $('#logged-out').hide();
         var name = user.displayName;
         var welcomeName = name ? name : user.email;
-
         user.getIdToken().then(function (idToken) {
           userIdToken = idToken;
-
           fetchNotes();
-
           $('#user').text(welcomeName);
           $('#logged-in').show();
-
         });
-
-      } else {
+      }
+      else
+      {
         $('#logged-in').hide();
         $('#logged-out').show();
 
@@ -43,64 +39,37 @@ $(function () {
   }
 
   function configureFirebaseLoginWidget() {
-    var uiConfig = {
-      'signInSuccessUrl': '/',
-      'signInOptions': [
-        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-        firebase.auth.EmailAuthProvider.PROVIDER_ID
-      ]
-    };
-
+    var uiConfig = { 'signInSuccessUrl': '/', 'signInOptions': [firebase.auth.GoogleAuthProvider.PROVIDER_ID, firebase.auth.EmailAuthProvider.PROVIDER_ID]};
     var ui = new firebaseui.auth.AuthUI(firebase.auth());
     ui.start('#firebaseui-auth-container', uiConfig);
   }
 
   function fetchNotes() {
     $.ajax(backendHostUrl + '/notes', {
-      headers: {
-        'Authorization': 'Bearer ' + userIdToken
-      }
+      headers: {'Authorization': 'Bearer ' + userIdToken}
     }).then(function (data) {
       $('#notes-container').empty();
-      data.forEach(function (note) {
-        $('#notes-container').append($('<p>').text(note.message));
-      });
+      data.forEach(function (note) { $('#notes-container').append($('<p>').text(note.message)); });
     });
   }
 
   var signOutBtn = $('#sign-out');
-  signOutBtn.click(function (event) {
-    event.preventDefault();
-    firebase.auth().signOut().then(function () {
-      console.log("Sign out successful");
-    }, function (error) {
-      console.log(error);
-    });
-  });
+  signOutBtn.click(function (event) {event.preventDefault(); firebase.auth().signOut().then(function () { console.log("Sign out successful");},
+                   function (error) {console.log(error); }); });
 
   var saveNoteBtn = $('#add-note');
   saveNoteBtn.click(function (event) {
     event.preventDefault();
-
     var noteField = $('#note-content');
     var note = noteField.val();
     noteField.val("");
 
     $.ajax(backendHostUrl + '/notes', {
-      headers: {
-        'Authorization': 'Bearer ' + userIdToken
-      },
+      headers: { 'Authorization': 'Bearer ' + userIdToken },
       method: 'POST',
-      data: JSON.stringify({
-        'message': note
-      }),
-      contentType: 'application/json'
-    }).then(function () {
-      fetchNotes();
-    });
+      data: JSON.stringify({ 'message': note }),
+      contentType: 'application/json' }).then(function () {fetchNotes();});
   });
-
   configureFirebaseLogin();
   configureFirebaseLoginWidget();
-
 });
