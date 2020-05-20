@@ -1,5 +1,5 @@
 $(function(){
-    var backendHostUrl = '<your-backend-url>';
+    var backendHostUrl = 'https://backend-dot-wellbeing-app-cloud-computing.ts.r.appspot.com';
 
     var config = {
       apiKey: "AIzaSyD1HTBWxISiw41mcO13ZliL5JxslNYhOco",
@@ -48,8 +48,7 @@ $(function(){
         'signInOptions': [
           firebase.auth.GoogleAuthProvider.PROVIDER_ID,
           firebase.auth.EmailAuthProvider.PROVIDER_ID
-        ],
-        'tosUrl': '<your-tos-url>',
+        ]
       };
   
       var ui = new firebaseui.auth.AuthUI(firebase.auth());
@@ -72,12 +71,7 @@ $(function(){
     var signOutBtn =$('#sign-out');
     signOutBtn.click(function(event) {
       event.preventDefault();
-  
-      firebase.auth().signOut().then(function() {
-        console.log("Sign out successful");
-      }, function(error) {
-        console.log(error);
-      });
+      firebase.auth().signOut().then(function() { console.log("Sign out successful");}, function(error) { console.log(error); });
     });
   
     var saveNoteBtn = $('#add-note');

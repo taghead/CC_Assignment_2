@@ -1,25 +1,29 @@
-import os
-import urllib
-import jinja2
-import webapp2
 import logging
+
+from flask import Flask, jsonify, request
 import flask_cors
+from google.appengine.ext import ndb
 import google.auth.transport.requests
 import google.oauth2.id_token
 import requests_toolbelt.adapters.appengine
 
-from flask import Flask, jsonify, request
-from google.appengine.api import users
-from google.appengine.ext import ndb
-from webapp2_extras import sessions
+#import os
+#import urllib
+#import logging
+#import flask_cors
+#import google.auth.transport.requests
+#import google.oauth2.id_token
+#import requests_toolbelt.adapters.appengine
+#
+#from flask import Flask, jsonify, request
+#from google.appengine.api import users
+#from google.appengine.ext import ndb
 
 requests_toolbelt.adapters.appengine.monkeypatch()
 HTTP_REQUEST = google.auth.transport.requests.Request()
 
 app = Flask(__name__)
 flask_cors.CORS(app)
-
-JINJA_ENVIRONMENT = jinja2.Environment( loader=jinja2.FileSystemLoader(os.path.dirname(__file__)), extensions=['jinja2.ext.autoescape'], autoescape=True)
 
 # Datastore Models
 class Note(ndb.Model):
@@ -83,42 +87,3 @@ def server_error(e):
     # Log the error and stacktrace.
     logging.exception('An error occurred during a request.')
     return 'An internal error occurred.', 500
-    
-# SessionHandler
-class SessionHandler(webapp2.RequestHandler):
-    def dispatch(self):
-        self.session_store = sessions.get_store(request=self.request)
-        try: webapp2.RequestHandler.dispatch(self)
-        finally: self.session_store.save_sessions(self.response)
-    @webapp2.cached_property
-    def session(self): return self.session_store.get_session()
-
-#Pages
-class MainPage(SessionHandler):
-    def get(self):
-        user = users.get_current_user()
-        print users.get_current_user()
-        if user:
-            url = users.create_logout_url(self.request.uri)
-            url_linktext = 'Logout'
-        else:
-            url = users.create_login_url(self.request.uri)
-            url_linktext = 'Login with Google'
-
-        template_values = {
-            'user': user,
-            'users': users,
-            'url': url,
-            'url_linktext': url_linktext,
-        }
-
-        template = JINJA_ENVIRONMENT.get_template('index.html')
-        self.response.write(template.render(template_values))
-
-    def post(self):        
-        self.redirect('/')
-
-config = { 'webapp2_extras.sessions': { 'secret_key': 'key', } }
-
-app = webapp2.WSGIApplication([ ('/', MainPage)], debug=True)
-
