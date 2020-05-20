@@ -1,0 +1,10 @@
+indexes:
+- kind: user
+  ancestor: no
+  properties:
+  - name: id
+    direction: asc
+  - name: name
+    direction: desc
+  - name: password
+    direction: desc

@@ -1,18 +1,63 @@
 import webapp2
 from webapp2_extras import sessions
 from google.appengine.ext import ndb
+from google.appengine.api import users
+
+# Variables
+import_html=""
 
 def get_one_entity(user_id):
     key = ndb.Key('user', user_id)
     return User.query(User.id == key).fetch()[0]
 
+def googleUser(user):
+            user = users.get_current_user()
+        if user:
+            url = users.create_logout_url(self.request.uri)
+            url_linktext = 'Logout'
+        else:
+            url = users.create_login_url(self.request.uri)
+            url_linktext = 'Login'
+
 class User(ndb.Model):
     id = ndb.KeyProperty(indexed=True)
     name = ndb.StringProperty(indexed=True)
-    password = ndb.IntegerProperty(indexed=True)
+    #password = ndb.IntegerProperty(indexed=True)
+    password = ndb.StringProperty(indexed=True)
+
+# Test Datastore Entry
+key = ndb.Key('user', 10101)
+p = User(id = key, name='Arthur Dent', password="a")
+k = p.put()
+
 
 class SessionHandler(webapp2.RequestHandler):
     def dispatch(self):
+        import_html=self.response.write("""
+        <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <style>
+            html {
+                background-color: tomato;
+            }
+    
+            body {
+                margin: auto;
+                width: 1000px;
+            }
+    
+            nav {
+                height: 30px;
+                border-bottom: 1px solid black;
+            }
+    
+            td {
+                border: 1px solid black;
+            }
+        </style>
+
+        """)
+        googleUser(user)
         self.session_store = sessions.get_store(request=self.request)
         try: webapp2.RequestHandler.dispatch(self)
         finally: self.session_store.save_sessions(self.response)
@@ -22,14 +67,27 @@ class SessionHandler(webapp2.RequestHandler):
 class Index(SessionHandler): 
     def get(self): self.redirect('/login.php') 
 
-### START TASK 1 ###
 class Login(SessionHandler):     
     def get(self): 
+        import_html
         self.response.write("""
-        <form method="post">
-            User ID<input type="text" name="id"\>
-            Password<input type="number" name="password"\>
-            <input type="submit" value="Log In">
+        <form method="post" class="p-3 mb-2 bg-primary text-white">
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
+                <div class="col-sm-10">
+                    <input type="text" name="id" readonly class="form-control-plaintext" id="staticEmail"
+                        value="email@example.com">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+                <div class="col-sm-10">
+                    <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password">
+                </div>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary mb-2">Confirm identity</button>
+            </div>
         </form>
         """)
 
@@ -41,9 +99,7 @@ class Login(SessionHandler):
             else: raise IndexError()
         except IndexError: 
             self.response.out.write("User id or password is invalid")
-### END TASK 1 ###
 
-### START TASK 2 ###
 class Main(SessionHandler):        
     def get(self): 
         self.response.write(get_one_entity(self.session.get('id')).name+"""
@@ -56,9 +112,7 @@ class Main(SessionHandler):
     def post(self):
         if self.request.get('change_password'): self.redirect('/password.php')
         if self.request.get('change_user'): self.redirect('/name.php')  
-### END TASK 2 ###
 
-### START TASK 3 ###
 class Name(SessionHandler):
     def get(self): 
         self.response.write("""
@@ -76,9 +130,7 @@ class Name(SessionHandler):
             user_entity.name = self.request.get('username')
             user_entity.put()
             self.redirect('/main.php')  
-### END TASK 3 ###
 
-### START TASK 4 ###
 class Password(SessionHandler):    
     def get(self): 
         self.response.write("""
@@ -96,7 +148,7 @@ class Password(SessionHandler):
             user_entity.put()
             self.redirect('/login.php')
         else: self.response.write('User password is incorrect')  
-### END TASK 4 ###
+
 config = { 'webapp2_extras.sessions': { 'secret_key': 'key', } }
 
 app=webapp2.WSGIApplication([ ('/', Index), ('/login.php',Login), ('/main.php', Main), ('/password.php', Password), ('/name.php', Name) ],config=config, debug=True)

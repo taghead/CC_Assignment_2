@@ -6,6 +6,9 @@ handlers:
 - url: /.*
   script: index.py
 
+- url: /bootstrap
+  static_dir: bootstrap
+
 libraries:
 - name: webapp2
   version: latest
