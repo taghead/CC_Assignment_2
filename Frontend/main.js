@@ -31,10 +31,14 @@ $(function () {
 
           $('#user').text(welcomeName);
           $('#logged-in').show();
+          $('#sign-out').show();
+          $('#sign-in').hide();
 
         });
 
       } else {
+        $('#sign-out').hide();
+        $('#sign-in').show();
         $('#logged-in').hide();
         $('#logged-out').show();
 
@@ -45,10 +49,7 @@ $(function () {
   function configureFirebaseLoginWidget() {
     var uiConfig = {
       'signInSuccessUrl': '/',
-      'signInOptions': [
-        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-        firebase.auth.EmailAuthProvider.PROVIDER_ID
-      ]
+      'signInOptions': [ firebase.auth.GoogleAuthProvider.PROVIDER_ID, firebase.auth.EmailAuthProvider.PROVIDER_ID]
     };
 
     var ui = new firebaseui.auth.AuthUI(firebase.auth());
