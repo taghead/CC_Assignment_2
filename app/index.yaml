@@ -1,23 +1,10 @@
 indexes:
-- kind: Note
+- kind: User
   ancestor: yes
   properties:
-  - name: created
-
-- kind: Note
-  ancestor: yes
-  properties:
-  - name: created
+  - name: id
     direction: desc
-
-- kind: AccountFood
-  ancestor: yes
-  properties:
-  - name: account
+  - name: name
     direction: desc
-  - name: food
-    direction: desc
-  - name: calories
-    direction: desc
-  - name: created
+  - name: password
     direction: desc

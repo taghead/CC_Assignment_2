@@ -1,7 +1,4 @@
-
-
 <body>
-
   <div id="logged-out">
     <h1>Health Wellbeing - Sign in to track your health</h1>
     <div id="firebaseui-auth-container"></div>
@@ -32,7 +29,5 @@
       </div>
     </div>
   </div>
-
 </body>
-
 </html>
