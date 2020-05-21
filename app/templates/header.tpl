@@ -13,6 +13,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <script>
     $(function () {
+      var backendHostUrl = 'http://localhost:8080/';
       var userIdToken = null;
       var config = {
         apiKey: "{{ config.apiKey }}",
@@ -36,6 +37,7 @@
             var welcomeName = name ? name : user.email;
             user.getIdToken().then(function (idToken) {
               userIdToken = idToken;
+              fetchNotes();
               $('#user').text(welcomeName);
               $('#logged-in').show();
             });
@@ -70,8 +72,33 @@
         });
       });
 
+      
+      var registerEmail = $('#registerEmail');
+      saveNoteBtn.click(function (event) {
+        event.preventDefault();
+
+        var noteField = $('#note-content');
+        var note = noteField.val();
+        noteField.val("");
+
+        $.ajax(backendHostUrl + '/notes', {
+          headers: {
+            'Authorization': 'Bearer ' + userIdToken
+          },
+          method: 'POST',
+          data: JSON.stringify({
+            'message': note
+          }),
+          contentType: 'application/json'
+        }).then(function () {
+          // Refresh notebook display.
+          fetchNotes();
+        });
+      });
+
       configureFirebaseLogin();
       configureFirebaseLoginWidget();
+
     });
   </script>
   <title>Health Wellbeing</title>

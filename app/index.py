@@ -27,21 +27,38 @@ class SessionHandler(webapp2.RequestHandler):
     def session(self): return self.session_store.get_session()
 
 class Index(SessionHandler): 
-    def get(self): self.redirect('/main.php') 
+    def get(self): self.redirect('/login.php') 
 
-class Main(SessionHandler):     
-    def get(self): 
-        #self.response.write()
+class Login(SessionHandler):     
+    def get(self):    
         template_values = {
             "config": firebase_config
         }
         self.response.write(JINJA_ENVIRONMENT.get_template('./templates/header.tpl').render(template_values)) 
         self.response.write(JINJA_ENVIRONMENT.get_template('./templates/index.tpl').render(template_values)) 
-    
-#    def post(self):
+    def post(self):
+        self.redirect('/main.php') 
 
+class SetSessionEmail(SessionHandler):     
+    def get(self):    
+        template_values = {
+            "config": firebase_config
+        }
+        self.response.write(JINJA_ENVIRONMENT.get_template('./templates/header.tpl').render(template_values)) 
+        self.response.write(JINJA_ENVIRONMENT.get_template('./templates/set_email.tpl').render(template_values)) 
+    def post(self):
+        print("GET EMAIL:"+self.request.get('email'))
+        self.redirect('/main.php')  
+
+class Main(SessionHandler):     
+    def get(self):    
+        template_values = {
+            "config": firebase_config
+        }
+        self.response.write(JINJA_ENVIRONMENT.get_template('./templates/header.tpl').render(template_values)) 
+        self.response.write(JINJA_ENVIRONMENT.get_template('./templates/main.tpl').render(template_values)) 
         
 config = { 'webapp2_extras.sessions': { 'secret_key': 'key', } }
-app=webapp2.WSGIApplication([ ('/', Index), ('/main.php',Main)],config=config, debug=True)
+app=webapp2.WSGIApplication([ ('/', Index), ('/SetSessionEmail.php', SetSessionEmail) ,('/login.php',Login), ('/main.php',Main)],config=config, debug=True)
 def main(): app.run()
 if __name__ == "__main__": main()
