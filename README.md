@@ -1,9 +1,30 @@
-apt install python3
-pip install --upgrade setuptools
-pip install --upgrade gcloud
-pip install -t lib pyrebase
-https://medium.com/@hiranya911/firebase-using-the-python-admin-sdk-on-google-cloud-functions-590f50226286
+### Requirements
+- Python 2.7
+- PIP
+- GCloud SDK
 
-Deployment
-dev_appserver.py .\Backend\index.yaml .\Frontend\app.yaml .\Backend\app.yaml
-gcloud app deploy .\Backend\index.yaml .\Frontend\app.yaml .\Backend\app.yaml
+## Features to be added
+### Security
+- Firebase secrets into templates without being able to use inspect element to view the secrets.
+
+## Deployment
+```shell
+git clone git@github.com:taghead/CC_Assignment_2.git
+cd ./CC_Assignment_2/Backend
+pip install -r requirements.txt -t lib
+gcloud components install app-engine-python --quiet
+gcloud components install app-engine-python-extras --quiet
+gcloud components update
+dev_appserver.py .\Frontend\app.yaml .\Backend\app.yaml
+```
+
+## Deployment
+```shell
+git clone git@github.com:taghead/CC_Assignment_2.git
+cd ./CC_Assignment_2/Backend
+pip install -r requirements.txt -t lib
+gcloud components install app-engine-python --quiet
+gcloud components install app-engine-python-extras --quiet
+gcloud components update
+gcloud app deploy .\Frontend\app.yaml .\Backend\app.yaml
+```
