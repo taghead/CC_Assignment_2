@@ -10,6 +10,8 @@ handlers:
 libraries:
 - name: webapp2
   version: latest
+- name: jinja2
+  version: latest
 
 env_variables:
   FIREBASE_PROJECT_ID: 'wellbeing-app-cloud-computing'

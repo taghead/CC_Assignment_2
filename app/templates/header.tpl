@@ -16,14 +16,14 @@
       function () {
         var userIdToken = null;
         var firebase_config = {
-          apiKey: "AIzaSyD1HTBWxISiw41mcO13ZliL5JxslNYhOco",
-          authDomain: "wellbeing-app-cloud-computing.firebaseapp.com",
-          databaseURL: "https://wellbeing-app-cloud-computing.firebaseio.com",
-          projectId: "wellbeing-app-cloud-computing",
-          storageBucket: "wellbeing-app-cloud-computing.appspot.com",
-          messagingSenderId: "355287276328",
-          appId: "1:355287276328:web:a8c73e4d164c608c91ce1d",
-          measurementId: "G-7WX27YE7MP"
+          apiKey: "{{ config.apiKey }}",
+          authDomain: "{{ config.authDomain }}",
+          databaseURL: "{{ config.databaseURL }}",
+          projectId: "{{ config.projectId }}",
+          storageBucket: "{{ config.storageBucket }}",
+          messagingSenderId: "{{ config.messagingSenderId }}",
+          appId: "{{ config.appId }}",
+          measurementId: "{{ config.measurementId }}"
         };
 
         function configureFirebaseLogin() {

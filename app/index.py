@@ -1,12 +1,18 @@
 import os
+import cgi
+import urllib
 import webapp2
-from google.appengine.ext.webapp import template
+import jinja2
 from webapp2_extras import sessions
 from google.appengine.ext import ndb
 
-# Templates
-header_tpl = os.path.join(os.getcwd(), "templates/header.tpl")
-index_tpl = os.path.join(os.getcwd(), "templates/index.tpl")
+JINJA_ENVIRONMENT = jinja2.Environment(
+    loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
+    extensions=['jinja2.ext.autoescape'],
+    autoescape=True)
+
+# Firebase Config
+from config import firebase_config  
 
 def get_one_entity(user_id):
     key = ndb.Key('user', user_id)
@@ -31,9 +37,11 @@ class Index(SessionHandler):
 class Login(SessionHandler):     
     def get(self): 
         #self.response.write()
-        template_values = {}
-        self.response.out.write(template.render(header_tpl, template_values))
-        self.response.out.write(template.render(index_tpl, template_values))
+        template_values = {
+            "config": firebase_config
+        }
+        self.response.write(JINJA_ENVIRONMENT.get_template('./templates/header.tpl').render(template_values)) 
+        self.response.write(JINJA_ENVIRONMENT.get_template('./templates/index.tpl').render(template_values)) 
         
 config = { 'webapp2_extras.sessions': { 'secret_key': 'key', } }
 app=webapp2.WSGIApplication([ ('/', Index), ('/login.php',Login)],config=config, debug=True)
