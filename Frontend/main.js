@@ -49,7 +49,7 @@ $(function () {
   function configureFirebaseLoginWidget() {
     var uiConfig = {
       'signInSuccessUrl': '/',
-      'signInOptions': [ firebase.auth.GoogleAuthProvider.PROVIDER_ID, firebase.auth.EmailAuthProvider.PROVIDER_ID]
+      'signInOptions': [ /*firebase.auth.GoogleAuthProvider.PROVIDER_ID,*/ firebase.auth.EmailAuthProvider.PROVIDER_ID ]
     };
 
     var ui = new firebaseui.auth.AuthUI(firebase.auth());
