@@ -4,6 +4,10 @@ from google.appengine.ext.webapp import template
 from webapp2_extras import sessions
 from google.appengine.ext import ndb
 
+# Templates
+header_tpl = os.path.join(os.getcwd(), "templates/header.tpl")
+index_tpl = os.path.join(os.getcwd(), "templates/index.tpl")
+
 def get_one_entity(user_id):
     key = ndb.Key('user', user_id)
     return User.query(User.id == key).fetch()[0]
@@ -26,24 +30,12 @@ class Index(SessionHandler):
 
 class Login(SessionHandler):     
     def get(self): 
-        self.response.write("""
-        <form method="post">
-            User ID<input type="text" name="id"\>
-            Password<input type="number" name="password"\>
-            <input type="submit" value="Log In">
-        </form>
-        """)
+        #self.response.write()
         template_values = {}
-        path = os.path.join(os.path.dirname(__file__), 'header.inc')
-        self.response.out.write(template.render(path, template_values))
-        path = os.path.join(os.path.dirname(__file__), 'index.html')
-        self.response.out.write(template.render(path, template_values))
+        self.response.out.write(template.render(header_tpl, template_values))
+        self.response.out.write(template.render(index_tpl, template_values))
         
-
 config = { 'webapp2_extras.sessions': { 'secret_key': 'key', } }
-
 app=webapp2.WSGIApplication([ ('/', Index), ('/login.php',Login)],config=config, debug=True)
-
 def main(): app.run()
-
 if __name__ == "__main__": main()
