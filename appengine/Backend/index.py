@@ -44,23 +44,21 @@ def query_cloudsql(query):
 
 @app.route('/search_food', methods=['GET'])
 def search_food():
-        id_token = request.headers['Authorization'].split(' ').pop()
-        claims = google.oauth2.id_token.verify_firebase_token(id_token, HTTP_REQUEST)
-        if not claims: return 'Unauthorized', 401
+    id_token = request.headers['Authorization'].split(' ').pop()
+    claims = google.oauth2.id_token.verify_firebase_token(id_token, HTTP_REQUEST)
+    if not claims: return 'Unauthorized', 401
 
-        data = request.get_json()
-        db = connect_to_cloudsql()
-        cursor = db.cursor()
-        cursor.execute('select name from FoodDataset LIMIT 10;')
-
-        results = []
-        for r in cursor.fetchall():
-            results.append({
-                "id": r[0],
-                "food": r[1],
-                "calories": r[2]
-            })
-        return jsonify(results)
+    data = request.get_json()
+    q = query_cloudsql('select id, name, calories from FoodDataset WHERE upper(name) LIKE \'%'+data['query']+'%\' LIMIT 10;')
+    q_list = []
+    for r in q:
+        q_list.append({
+            'friendly_id': str(r[0]),
+            'food': str(r[1]),
+            'calories': str(r[2])
+        })
+    print(q_list)
+    return(jsonify(q_list))
 
 @app.route('/food', methods=['GET'])
 def list_food():
@@ -81,16 +79,7 @@ def list_food():
             'created': f.created
         })
 
-    q = query_cloudsql('select id, name, calories from FoodDataset LIMIT 10;')
-    q_list = []
-    for r in q:
-        q_list.append({
-            'friendly_id': str(r[0]),
-            'food': str(r[1]),
-            'calories': str(r[2])
-        })
-    print(q_list)
-    return(jsonify(q_list))
+    return jsonify(list_of_food)
 
 @app.route('/add_food', methods=['POST', 'PUT'])
 def add_food():
