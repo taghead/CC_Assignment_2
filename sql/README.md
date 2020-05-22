@@ -1,5 +1,4 @@
-Source: 
-
+Google Cloud Platform > SQL > Create Instance
 
 Upload the following to google bucket:
 - [/sql/food-dataset-schema.sql](/sql/food-dataset-schema.sql)

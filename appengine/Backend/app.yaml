@@ -13,9 +13,11 @@ handlers:
 libraries:
 - name: webapp2
   version: latest
-- name: jinja2
-  version: latest
+- name: MySQLdb
+  version: "latest"
 
 env_variables:
+  CLOUDSQL_CONNECTION_NAME:  wellbeing-app-cloud-computing:australia-southeast1:wellbeing-sql
+  CLOUDSQL_USER: root
   FIREBASE_PROJECT_ID: 'wellbeing-app-cloud-computing'
   GAE_USE_SOCKETS_HTTPLIB : 'true'
