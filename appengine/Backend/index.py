@@ -24,35 +24,22 @@ class Food(ndb.Model):
     calories = ndb.TextProperty()
     created = ndb.DateTimeProperty(auto_now_add=True)
 
-def connect_to_cloudsql():
-    if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine/'):
-        cloudsql_unix_socket = os.path.join(
-            '/cloudsql', CLOUDSQL_CONNECTION_NAME)
-        db = MySQLdb.connect(
-            unix_socket=cloudsql_unix_socket,
-            user=CLOUDSQL_USER,
-            passwd='1234',
-            db='wellbeingapp')
-    else:
-        db = MySQLdb.connect(
-            host='127.0.0.1', user=CLOUDSQL_USER, passwd='1234')
-    return db
-
 def query_cloudsql(query):
-    db = connect_to_cloudsql()
+    cloudsql_unix_socket = os.path.join(
+        '/cloudsql', CLOUDSQL_CONNECTION_NAME)
+    db = MySQLdb.connect(
+        unix_socket=cloudsql_unix_socket,
+        user=CLOUDSQL_USER,
+        passwd='1234',
+        db='wellbeingapp')
     cursor = db.cursor()
     cursor.execute(query)
 
     results = []
     for r in cursor.fetchall():
-        results.append({
-            "friendly_id": str(r[0]),
-            "food": str(r[1]),
-            "calories": str(r[2]),
-            "created": "test"
-        })
-    print results[0]
-    return results[0]
+        results.append(r)
+    print(results)
+    return results
 
 
 @app.route('/search_food', methods=['GET'])
@@ -84,39 +71,26 @@ def list_food():
     ancestor_key = ndb.Key(Food, claims['sub'])
     query = Food.query(ancestor=ancestor_key).order(-Food.created)
     food = query.fetch()
-#    
-#    list_of_food = []
-#    for f in food:
-#        list_of_food.append({
-#            'friendly_id': f.friendly_id,
-#            'food': f.food,
-#            'calories': f.calories,
-#            'created': f.created
-#        })
-#    results = query_cloudsql('select id, name, calories from FoodDataset LIMIT 10;')
-
-    cloudsql_unix_socket = os.path.join(
-        '/cloudsql', CLOUDSQL_CONNECTION_NAME)
-    db = MySQLdb.connect(
-        unix_socket=cloudsql_unix_socket,
-        user=CLOUDSQL_USER,
-        passwd='1234',
-        db='wellbeingapp')
-    cursor = db.cursor()
-    cursor.execute('select id, name, calories from FoodDataset LIMIT 10;')
-
-    results = []
-    for r in cursor.fetchall():
-        results.append({
-            "friendly_id": str(r[0]),
-            "food": str(r[1]),
-            "calories": str(r[2]),
-            "created": "test"
-        })
-    print results[0]
     
-    return(results[0])
-    #return jsonify(list_of_food)
+    list_of_food = []
+    for f in food:
+        list_of_food.append({
+            'friendly_id': f.friendly_id,
+            'food': f.food,
+            'calories': f.calories,
+            'created': f.created
+        })
+
+    q = query_cloudsql('select id, name, calories from FoodDataset LIMIT 10;')
+    q_list = []
+    for r in q:
+        q_list.append({
+            'friendly_id': str(r[0]),
+            'food': str(r[1]),
+            'calories': str(r[2])
+        })
+    print(q_list)
+    return(jsonify(q_list))
 
 @app.route('/add_food', methods=['POST', 'PUT'])
 def add_food():
