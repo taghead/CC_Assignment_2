@@ -56,6 +56,26 @@ $(function () {
     ui.start('#firebaseui-auth-container', uiConfig);
   }
 
+  var searchFoodButton = $('#search-food-button');
+  searchFoodButton.click(function (event) {
+    event.preventDefault();
+    var searchName = $('#search-food-field');
+    $.ajax(backendHostUrl + '/search_food', {
+      headers: {'Authorization': 'Bearer ' + userIdToken},
+      method: 'POST',
+      data: JSON.stringify({
+        'query': searchName.val()
+      }),
+      contentType: 'application/json'
+    }).then(function (data) {
+      $('#search-container').empty();
+      $('#search-container').append($('<p>').text("Search Results"));
+      data.forEach(function (q) {
+        $('#search-container').append($('<p>').text(q[1]));
+      });
+    });
+  });
+
   function fetchFood() {
     $.ajax(backendHostUrl + '/food', {
       headers: {'Authorization': 'Bearer ' + userIdToken}
@@ -100,5 +120,4 @@ $(function () {
 
   configureFirebaseLogin();
   configureFirebaseLoginWidget();
-
 });

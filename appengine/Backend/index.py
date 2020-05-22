@@ -1,3 +1,4 @@
+import os
 import logging
 import MySQLdb
 import flask_cors
@@ -37,7 +38,24 @@ def connect_to_cloudsql():
             host='127.0.0.1', user=CLOUDSQL_USER, passwd='1234')
     return db
 
-@app.route('/search_food'):
+def query_cloudsql(query):
+    db = connect_to_cloudsql()
+    cursor = db.cursor()
+    cursor.execute(query)
+
+    results = []
+    for r in cursor.fetchall():
+        results.append({
+            "friendly_id": str(r[0]),
+            "food": str(r[1]),
+            "calories": str(r[2]),
+            "created": "test"
+        })
+    print results[0]
+    return results[0]
+
+
+@app.route('/search_food', methods=['GET'])
 def search_food():
         id_token = request.headers['Authorization'].split(' ').pop()
         claims = google.oauth2.id_token.verify_firebase_token(id_token, HTTP_REQUEST)
@@ -66,17 +84,39 @@ def list_food():
     ancestor_key = ndb.Key(Food, claims['sub'])
     query = Food.query(ancestor=ancestor_key).order(-Food.created)
     food = query.fetch()
-    
-    list_of_food = []
-    for f in food:
-        list_of_food.append({
-            'friendly_id': f.friendly_id,
-            'food': f.food,
-            'calories': f.calories,
-            'created': f.created
+#    
+#    list_of_food = []
+#    for f in food:
+#        list_of_food.append({
+#            'friendly_id': f.friendly_id,
+#            'food': f.food,
+#            'calories': f.calories,
+#            'created': f.created
+#        })
+#    results = query_cloudsql('select id, name, calories from FoodDataset LIMIT 10;')
+
+    cloudsql_unix_socket = os.path.join(
+        '/cloudsql', CLOUDSQL_CONNECTION_NAME)
+    db = MySQLdb.connect(
+        unix_socket=cloudsql_unix_socket,
+        user=CLOUDSQL_USER,
+        passwd='1234',
+        db='wellbeingapp')
+    cursor = db.cursor()
+    cursor.execute('select id, name, calories from FoodDataset LIMIT 10;')
+
+    results = []
+    for r in cursor.fetchall():
+        results.append({
+            "friendly_id": str(r[0]),
+            "food": str(r[1]),
+            "calories": str(r[2]),
+            "created": "test"
         })
-        
-    return jsonify(list_of_food)
+    print results[0]
+    
+    return(results[0])
+    #return jsonify(list_of_food)
 
 @app.route('/add_food', methods=['POST', 'PUT'])
 def add_food():
