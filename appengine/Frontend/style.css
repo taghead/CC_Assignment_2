@@ -1,30 +1,39 @@
+html body {
+  background-color: beige;
+}
+
 body {
-    font-family: "helvetica", sans-serif;
-    text-align: center;
-  }
-  
-  form {
-    padding: 5px 0 10px;
-    margin-bottom: 30px;
-  }
-  h3,legend {
-    font-weight: 400;
-    padding: 18px 0 15px;
-    margin: 0 0 0;
-  }
-  
-  div.form-group {
-     margin-bottom: 10px;
-  }
-  
-  input, textarea {
-    width: 250px;
-    font-size: 14px;
-    padding: 6px;
-  }
-  
-  textarea {
-    vertical-align: top;
-    height: 75px;
-  }
-  
+  font-family: "helvetica", sans-serif;
+  text-align: center;
+}
+
+form {
+  margin: auto;
+  margin-top: 0.5%;
+  width: 50%;
+  background-color: rgba(0, 0, 0, 0.10);
+  padding: 10px;
+}
+
+h3,
+legend {
+  font-weight: 400;
+  padding: 18px 0 15px;
+  margin: 0 0 0;
+}
+
+div.form-group {
+  margin-bottom: 10px;
+}
+
+input,
+textarea {
+  width: 250px;
+  font-size: 14px;
+  padding: 6px;
+}
+
+textarea {
+  vertical-align: top;
+  height: 75px;
+}

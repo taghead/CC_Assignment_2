@@ -84,6 +84,9 @@ $(function () {
 
     var foodName = $('#add-food-name');
     var foodCal = $('#add-food-cal');
+    if(foodName.val()=="-" || foodCal.val()=="-") return
+    if(foodName.val()=="" || foodCal.val()=="") return
+    if(foodName.val()==" " || foodCal.val()==" ") return
     $.ajax(backendHostUrl + '/add_food', {
       headers: {'Authorization': 'Bearer ' + userIdToken},
       method: 'POST',
@@ -128,7 +131,7 @@ $(function () {
       });
     });
   }
-  
+
   configureFirebaseLogin();
   configureFirebaseLoginWidget();
 });

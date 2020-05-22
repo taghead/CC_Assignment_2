@@ -1,15 +1,23 @@
 <!doctype html>
 <html>
+
 <head>
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+  </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+  </script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.6.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.6.0/firebase-auth.js"></script>
   <script src="https://cdn.firebase.com/libs/firebaseui/3.4.1/firebaseui.js"></script>
   <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.4.1/firebaseui.css">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="style.css">
   <script src="/main.js"></script>
   <title>Health Wellbeing</title>
@@ -19,9 +27,10 @@
   <div id="nav-bar-logged-in">
     <a class="navbar-brand" href="food.html">Add Food</a>
   </div>
-  <button id="sign-out">Sign out</button> 
-  <button id="sign-in" onclick="location.href = 'login.html';">Sign in</button> 
+  <button id="sign-out">Sign out</button>
+  <button id="sign-in" onclick="location.href = 'login.html';">Sign in</button>
 </nav>
+
 <body>
   <div id="logged-out">
     <h1>Health Wellbeing</h1>
@@ -29,32 +38,39 @@
   </div>
 
   <div id="logged-in">
-  <div id="search-form">
-    <form action="" method="post">
-      <input type="text" id="search-food-name">Search</input><br/>
-      <button id="search-food-button">Search Food</button>
-    </form>
-  </div>
-    
-  <h3>What did you have today?</h3>
-  <div id="food-form">
-    <form action="" method="post">
-    <script>
-    function updateFields(val) {
-      var res = val.split("-");
-      document.getElementById('add-food-name').value = res[0]
-      document.getElementById('add-food-cal').value = res[1]
-    }
-    </script>
-    <select id="search-container" onchange="updateFields(this.value)"></select>
-      <input type="text" id="add-food-name">How many calories?</input><br/>
-      <input type="number" id="add-food-cal">What did you eat? </input><br/>
-      <button id="add-food">Add Food</button>
-    </form>
-  </div>
+    <div id="search-form">
+      <form action="" method="post">
+        <input type="text" id="search-food-name" class="form-control" placeholder="Search" />
+        <button id="search-food-button">Search Food</button>
+      </form>
+    </div>
 
-  
-  <div id="food-container"></div>
+    <form id="search-results" class="form-group">
+      <script>
+        function updateFields(val) {
+          var res = val.split("-");
+          document.getElementById('add-food-name').value = res[0]
+          document.getElementById('add-food-cal').value = res[1]
+        }
+      </script>
+      <label for="search-container">Select from result</label>
+      <select id="search-container" onchange="updateFields(this.value)"></select>
+    </form>
+
+    <div id="food-form" class="form-group">
+      <form action="" method="post">
+
+        <input class="form-control" type="text" id="add-food-name" placeholder="Food" readonly />
+        <input class="form-control" type="number" id="add-food-cal" placeholder="Calories" readonly />
+        <button id="add-food">Add Food</button>
+      </form>
+    </div>
+
+    <div style="background-color: rgba(0, 0, 0, 0.10);">
+      <h3>Logged foods</h3>
+      <div id="food-container"></div>
+    </div>
   </div>
 </body>
+
 </html>
