@@ -124,11 +124,11 @@ $(function () {
     }).then(function (data) {
       $('#search-container').empty();
       data.forEach(function (f) {
-        $('#search-container').append($('<p>').text(f.food+" - "+f.calories));
+        $('#search-container').append($('<option>', {value:(f.food+'-'+f.calories), text:(f.food+'-'+f.calories)}));
       });
     });
   }
-
+  
   configureFirebaseLogin();
   configureFirebaseLoginWidget();
 });

@@ -39,13 +39,21 @@
   <h3>What did you have today?</h3>
   <div id="food-form">
     <form action="" method="post">
+    <script>
+    function updateFields(val) {
+      var res = val.split("-");
+      document.getElementById('add-food-name').value = res[0]
+      document.getElementById('add-food-cal').value = res[1]
+    }
+    </script>
+    <select id="search-container" onchange="updateFields(this.value)"></select>
       <input type="text" id="add-food-name">How many calories?</input><br/>
       <input type="number" id="add-food-cal">What did you eat? </input><br/>
       <button id="add-food">Add Food</button>
     </form>
   </div>
 
-  <div id="search-container"></div>
+  
   <div id="food-container"></div>
   </div>
 </body>
