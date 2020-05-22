@@ -62,7 +62,7 @@ $(function () {
     }).then(function (data) {
       $('#food-container').empty();
       data.forEach(function (f) {
-        $('#food-container').append($('<p>').text(f.message+"("+f.food+" "+f.calories+")"));
+        $('#food-container').append($('<p>').text(f.food+" - "+f.calories));
       });
     });
   }
@@ -87,7 +87,6 @@ $(function () {
       headers: {'Authorization': 'Bearer ' + userIdToken},
       method: 'POST',
       data: JSON.stringify({
-        'message': "You added: "+foodName.val()+" which had "+foodCal.val()+" Calories",
         'food': foodName.val(),
         'calories': foodCal.val()
       }),
