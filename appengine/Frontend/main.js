@@ -27,6 +27,7 @@ $(function () {
         user.getIdToken().then(function (idToken) {
           userIdToken = idToken;
 
+          fetchSQLQuery();
           fetchFood();
 
           $('#user').text(welcomeName);
@@ -56,23 +57,13 @@ $(function () {
     ui.start('#firebaseui-auth-container', uiConfig);
   }
 
-  var searchFoodButton = $('#search-food-button');
-  searchFoodButton.click(function (event) {
+  var signOutBtn = $('#sign-out');
+  signOutBtn.click(function (event) {
     event.preventDefault();
-    var searchName = $('#search-food-field');
-    $.ajax(backendHostUrl + '/search_food', {
-      headers: {'Authorization': 'Bearer ' + userIdToken},
-      method: 'POST',
-      data: JSON.stringify({
-        'query': searchName.val()
-      }),
-      contentType: 'application/json'
-    }).then(function (data) {
-      $('#search-container').empty();
-      $('#search-container').append($('<p>').text("Search Results"));
-      data.forEach(function (q) {
-        $('#search-container').append($('<p>').text(q[1]));
-      });
+    firebase.auth().signOut().then(function () {
+      console.log("Sign out successful");
+    }, function (error) {
+      console.log(error);
     });
   });
 
@@ -86,16 +77,6 @@ $(function () {
       });
     });
   }
-
-  var signOutBtn = $('#sign-out');
-  signOutBtn.click(function (event) {
-    event.preventDefault();
-    firebase.auth().signOut().then(function () {
-      console.log("Sign out successful");
-    }, function (error) {
-      console.log(error);
-    });
-  });
 
   var saveFoodBtn = $('#add-food');
   saveFoodBtn.click(function (event) {
@@ -117,6 +98,36 @@ $(function () {
     foodName.val("");
     foodCal.val("");
   });
+
+
+  var saveSQLQueryBtn = $('#search-food-button');
+  saveSQLQueryBtn.click(function (event) {
+    event.preventDefault();
+
+    var field = $('#search-food-name');
+    $.ajax(backendHostUrl + '/add_query', {
+      headers: {'Authorization': 'Bearer ' + userIdToken},
+      method: 'POST',
+      data: JSON.stringify({
+        'query': field.val()
+      }),
+      contentType: 'application/json'
+    }).then(function () {
+      fetchSQLQuery();
+    });
+    field.val("");
+  });
+
+  function fetchSQLQuery() {
+    $.ajax(backendHostUrl + '/SQL_query', {
+      headers: {'Authorization': 'Bearer ' + userIdToken}
+    }).then(function (data) {
+      $('#search-container').empty();
+      data.forEach(function (f) {
+        $('#search-container').append($('<p>').text(f.food+" - "+f.calories));
+      });
+    });
+  }
 
   configureFirebaseLogin();
   configureFirebaseLoginWidget();

@@ -4,3 +4,9 @@ indexes:
   properties:
     - name: created 
       direction: desc
+
+- kind: SQLQueryLog
+  ancestor: yes
+  properties:
+    - name: created
+      direction: desc
