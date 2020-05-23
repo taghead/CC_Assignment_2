@@ -49,9 +49,11 @@
       <script>
         function updateFields(val) {
           reverse_val = val.split("").reverse().join("");
-          var res = reverse_val.split("-");
+          var res = reverse_val.split(/-(.+)/);
+
           calories = res[0].split("").reverse().join("");
           food = res[1].split("").reverse().join("");
+          
           document.getElementById('add-food-name').value = food
           document.getElementById('add-food-cal').value = Math.round(calories)
         }
