@@ -23,7 +23,7 @@
     <script src="/main.js"></script>
 
     </script>
-    <title>Health Wellbeing - Events</title>
+    <title>Health Wellbeing - Email Us</title>
 </head>
 <nav id="nav-bar" class="navbar navbar-dark bg-dark">
     <a class="navbar-brand" href="index.html">Home</a>
@@ -42,25 +42,20 @@
         <h3>Sign in to check your health</h3>
     </div>
 
-    <script>
-    function updateMap(val) {
-        document.getElementById("map").setAttribute("src",
-            "https://www.google.com/maps/embed/v1/place?key=AIzaSyD1HTBWxISiw41mcO13ZliL5JxslNYhOco&q="+val.replace(/ /g, '+'));
-            }
-    </script>
     <div id="logged-in">
-        <iframe id="map" width="600" height="450" frameborder="0" style="border:0"
-            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyD1HTBWxISiw41mcO13ZliL5JxslNYhOco&q=Space+Needle,Seattle+WA"
-            allowfullscreen>
-        </iframe>
-        <form action="" method="post">
-            <input class="form-control" type="text" id="add-event-location"
-                placeholder="Location (example 'Melbourne)'" />
-            <input class="form-control" type="text" id="add-event-message" placeholder="message" />
-            <button id="add-event" onclick="location.reload(); ">Add Event</button>
+        <form action="https://formspree.io/mbjzdnyz" method="POST">
+            <label>
+                Your email:
+                <input type="text" name="_replyto">
+            </label>
+            <label>
+                Your message:
+                <textarea name="message"></textarea>
+            </label>
+            <button type="submit">Send</button>
         </form>
-
-        <select id="events-container" size="10" onchange="updateMap(this.value);"></select>
+    </div>
+    </div>
 </body>
 
 </html>
