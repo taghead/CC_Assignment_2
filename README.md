@@ -1,13 +1,12 @@
-### Requirements
+
+
+
+## Deployment and Testing Prerequisite
 - Python 2.7
 - PIP
 - GCloud SDK
 
-## Features to be added
-### Security
-- Firebase secrets into templates without being able to use inspect element to view the secrets.
-
-## Deployment
+### Local Testing
 ```shell
 git clone git@github.com:taghead/CC_Assignment_2.git
 cd ./CC_Assignment_2/Backend
@@ -18,7 +17,7 @@ gcloud components update
 dev_appserver.py .\Frontend\app.yaml .\Backend\app.yaml
 ```
 
-## Deployment
+### Deployment
 ```shell
 git clone git@github.com:taghead/CC_Assignment_2.git
 cd ./CC_Assignment_2/Backend
