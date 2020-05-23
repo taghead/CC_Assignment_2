@@ -82,10 +82,13 @@ $(function () {
   function fetchFoodGraph() {
     $.ajax(backendHostUrl + '/food', {
       headers: {'Authorization': 'Bearer ' + userIdToken}
-    }).then(function (data) {
-      $('#food-container').empty();
-      data.forEach(function (f) {
-        $('#food-container').append($('<p>').text(f.food+" - "+f.calories));
+    }).then(function (d) {
+      chart_data = [['Date', 'Calories']]
+      d.forEach(function (x) {
+        chart_data.push([
+          x.created,
+          Number(x.calories)
+        ])
       });
       google.charts.load('current', {
         'packages': ['corechart']
@@ -93,24 +96,16 @@ $(function () {
       google.charts.setOnLoadCallback(drawChart);
   
       function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Year', 'Sales'],
-          ['2004', 1000],
-          ['2005', 1170],
-          ['2006', 660],
-          ['2007', 1030]
-        ]);
+        var data = google.visualization.arrayToDataTable(chart_data);
   
         var options = {
-          title: 'Company Performance',
+          title: 'Caloric Intake Graph',
           curveType: 'function',
           legend: {
             position: 'bottom'
           }
         };
-  
         var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-  
         chart.draw(data, options);
       }
     });
