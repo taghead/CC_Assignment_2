@@ -30,6 +30,7 @@ $(function () {
           fetchSQLQuery();
           fetchFood();
           fetchFoodGraph();
+          fetchEvents();
 
           $('#user').text(welcomeName);
           $('#logged-in').show();
@@ -109,6 +110,17 @@ $(function () {
         var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
         chart.draw(data, options);
       }
+    });
+  }
+
+  function fetchEvents() {
+    $.ajax(backendHostUrl + '/get_events', {
+      headers: {'Authorization': 'Bearer ' + userIdToken}
+    }).then(function (data) {
+      $('#events-container').empty();
+      data.forEach(function (e) {
+        $('#events-container').append($('<p>').text(e.location+" - "+e.message));
+      });
     });
   }
 

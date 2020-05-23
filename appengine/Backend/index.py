@@ -51,6 +51,26 @@ def query_cloudsql(query):
         results.append(r)
     return results
 
+@app.route('/get_events', methods=['GET'])
+def get_event():
+    id_token = request.headers['Authorization'].split(' ').pop()
+    claims = google.oauth2.id_token.verify_firebase_token(id_token, HTTP_REQUEST)
+    if not claims: return 'Unauthorized', 401
+
+    ancestor_key = ndb.Key(Food, claims['sub'])
+    query = Events.query().order(-Food.created)
+    event = query.fetch()
+    
+    list_of_events = []
+    for e in event:
+        list_of_events.append({
+            'friendly_id': e.friendly_id,
+            'location': e.location,
+            'message': e.message,
+            'created': e.created
+        })
+
+    return jsonify(list_of_events)
 
 @app.route('/add_event', methods=['POST', 'PUT'])
 def add_event():
