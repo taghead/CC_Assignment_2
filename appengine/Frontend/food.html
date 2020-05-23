@@ -48,9 +48,12 @@
     <form id="search-results" class="form-group">
       <script>
         function updateFields(val) {
-          var res = val.split("-");
-          document.getElementById('add-food-name').value = res[0]
-          document.getElementById('add-food-cal').value = res[1]
+          reverse_val = val.split("").reverse().join("");
+          var res = reverse_val.split("-");
+          calories = res[0].split("").reverse().join("");
+          food = res[1].split("").reverse().join("");
+          document.getElementById('add-food-name').value = food
+          document.getElementById('add-food-cal').value = calories
         }
       </script>
       <label for="search-container">Select from result</label>
