@@ -96,7 +96,8 @@ $(function () {
       google.charts.setOnLoadCallback(drawChart);
   
       function drawChart() {
-        var data = google.visualization.arrayToDataTable(chart_data);
+        if(chart_data.length == 1) var data = google.visualization.arrayToDataTable([['Date', 'Calories'], ['Add Food for graph', 0]]);
+        else var data = google.visualization.arrayToDataTable(chart_data);
   
         var options = {
           title: 'Caloric Intake Graph',
