@@ -19,7 +19,10 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="style.css">
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script src="/main.js"></script>
+  
+  </script>
   <title>Health Wellbeing</title>
 </head>
 <nav id="nav-bar" class="navbar navbar-dark bg-dark">
@@ -39,43 +42,9 @@
   </div>
 
   <div id="logged-in">
-    <div id="search-form">
-      <form action="" method="post">
-        <input type="text" id="search-food-name" class="form-control" placeholder="Search" />
-        <button id="search-food-button">Search Food</button>
-      </form>
-    </div>
-
-    <form id="search-results" class="form-group">
-      <script>
-        function updateFields(val) {
-          reverse_val = val.split("").reverse().join("");
-          var res = reverse_val.split(/-(.+)/);
-
-          calories = res[0].split("").reverse().join("");
-          food = res[1].split("").reverse().join("");
-          
-          document.getElementById('add-food-name').value = food
-          document.getElementById('add-food-cal').value = Math.round(calories)
-        }
-      </script>
-      <label for="search-container">Select from result</label>
-      <select id="search-container" onchange="updateFields(this.value)"></select>
-    </form>
-
-    <div id="food-form" class="form-group">
-      <form action="" method="post">
-
-        <input class="form-control" type="text" id="add-food-name" placeholder="Food" readonly />
-        <input class="form-control" type="number" id="add-food-cal" placeholder="Calories" readonly />
-        <button id="add-food">Add Food</button>
-      </form>
-    </div>
-
-    <div style="background-color: rgba(0, 0, 0, 0.10);">
-      <h3>Logged foods</h3>
-      <div id="food-container"></div>
-    </div>
+    <h1>Welcome, <span id="user"></span>!</h1>
+    <div id="curve_chart" style="width: 900px; height: 500px; margin: auto; padding: 10px; margin-top: 0.5%;"></div>
+  </div>
   </div>
 </body>
 
