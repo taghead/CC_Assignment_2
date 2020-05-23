@@ -29,6 +29,7 @@ $(function () {
 
           fetchSQLQuery();
           fetchFood();
+          fetchFoodGraph();
 
           $('#user').text(welcomeName);
           $('#logged-in').show();
@@ -75,6 +76,43 @@ $(function () {
       data.forEach(function (f) {
         $('#food-container').append($('<p>').text(f.food+" - "+f.calories));
       });
+    });
+  }
+
+  function fetchFoodGraph() {
+    $.ajax(backendHostUrl + '/food', {
+      headers: {'Authorization': 'Bearer ' + userIdToken}
+    }).then(function (data) {
+      $('#food-container').empty();
+      data.forEach(function (f) {
+        $('#food-container').append($('<p>').text(f.food+" - "+f.calories));
+      });
+      google.charts.load('current', {
+        'packages': ['corechart']
+      });
+      google.charts.setOnLoadCallback(drawChart);
+  
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Year', 'Sales'],
+          ['2004', 1000],
+          ['2005', 1170],
+          ['2006', 660],
+          ['2007', 1030]
+        ]);
+  
+        var options = {
+          title: 'Company Performance',
+          curveType: 'function',
+          legend: {
+            position: 'bottom'
+          }
+        };
+  
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+  
+        chart.draw(data, options);
+      }
     });
   }
 
