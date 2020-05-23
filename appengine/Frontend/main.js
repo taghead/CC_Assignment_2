@@ -119,7 +119,7 @@ $(function () {
     }).then(function (data) {
       $('#events-container').empty();
       data.forEach(function (e) {
-        $('#events-container').append($('<p>').text(e.location+" - "+e.message));
+        $('#events-container').append($('<option>', {value: e.location, text:e.location+" - "+e.message}));
       });
     });
   }

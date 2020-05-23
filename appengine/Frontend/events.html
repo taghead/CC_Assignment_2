@@ -42,8 +42,10 @@
     </div>
 
     <script>
+    function updateMap(val) {
         document.getElementById("map").setAttribute("src",
-            "https://www.google.com/maps/embed/v1/place?key=AIzaSyD1HTBWxISiw41mcO13ZliL5JxslNYhOco&q=Melbourne");
+            "https://www.google.com/maps/embed/v1/place?key=AIzaSyD1HTBWxISiw41mcO13ZliL5JxslNYhOco&q="+val.replace(/ /g, '+'));
+            }
     </script>
     <div id="logged-in">
         <iframe id="map" width="600" height="450" frameborder="0" style="border:0"
@@ -52,15 +54,12 @@
         </iframe>
         <form action="" method="post">
             <input class="form-control" type="text" id="add-event-location"
-                placeholder="Location (example 'Melbourne'" />
+                placeholder="Location (example 'Melbourne)'" />
             <input class="form-control" type="text" id="add-event-message" placeholder="message" />
-            <button id="add-event">Add Food</button>
+            <button id="add-event" onclick="updateEvents();">Add Food</button>
         </form>
 
-        <div id="events-container">
-            <div>
-            </div>
-        </div>
+        <select id="events-container" size="10" onchange="updateMap(this.value);"></select>
 </body>
 
 </html>
