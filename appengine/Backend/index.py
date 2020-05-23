@@ -29,6 +29,12 @@ class SQLQueryLog(ndb.Model):
     user_sql_query = ndb.StringProperty()
     created = ndb.DateTimeProperty(auto_now_add=True)
 
+class Events(ndb.Model):
+    friendly_id = ndb.StringProperty()
+    location = ndb.StringProperty()
+    message = ndb.StringProperty()
+    created = ndb.DateTimeProperty(auto_now_add=True)
+
 def query_cloudsql(query):
     cloudsql_unix_socket = os.path.join(
         '/cloudsql', CLOUDSQL_CONNECTION_NAME)
@@ -45,6 +51,19 @@ def query_cloudsql(query):
         results.append(r)
     return results
 
+
+@app.route('/add_event', methods=['POST', 'PUT'])
+def add_event():
+    id_token = request.headers['Authorization'].split(' ').pop()
+    claims = google.oauth2.id_token.verify_firebase_token(id_token, HTTP_REQUEST)
+    if not claims: return 'Unauthorized', 401
+    data = request.get_json()
+
+    event = Events(location=data['location'], message=data['message'])
+    event.friendly_id = claims.get('email', claims.get('email', 'Unknown'))
+    event.put()
+
+    return 'OK', 200
 
 @app.route('/SQL_query', methods=['GET'])
 def sql_query():

@@ -136,6 +136,29 @@ $(function () {
     foodCal.val("");
   });
 
+  var saveEventBtn = $('#add-event');
+  saveEventBtn.click(function (event) {
+    event.preventDefault();
+
+    var eventLocation = $('#add-event-location');
+    var eventName = $('#add-event-message');
+    if(eventLocation.val()=="-" || eventName.val()=="-") return
+    if(eventLocation.val()=="" || eventName.val()=="") return
+    if(eventLocation.val()==" " || eventName.val()==" ") return
+    $.ajax(backendHostUrl + '/add_event', {
+      headers: {'Authorization': 'Bearer ' + userIdToken},
+      method: 'POST',
+      data: JSON.stringify({
+        'location': eventLocation.val(),
+        'message': eventName.val()
+      }),
+      contentType: 'application/json'
+    }).then(function () {
+      updateEvents();
+    });
+    eventLocation.val("");
+    eventName.val("");
+  });
 
   var saveSQLQueryBtn = $('#search-food-button');
   saveSQLQueryBtn.click(function (event) {

@@ -10,3 +10,9 @@ indexes:
   properties:
     - name: created
       direction: desc
+
+- kind: Events
+  ancestor: yes
+  properties:
+    - name: created
+      direction: desc
